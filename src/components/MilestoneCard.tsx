@@ -70,7 +70,7 @@ export function MilestoneCard({
       </dl>
 
       <span className="milestone__multiplier">
-        ×{multiplier.toFixed(2).replace('.', ',')} włożonego kapitału
+        {multiplier.toFixed(2).replace('.', ',')}× tego, co wpłacisz
       </span>
     </button>
   )

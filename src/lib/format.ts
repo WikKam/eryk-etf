@@ -57,11 +57,15 @@ export function addMonths(date: Date, months: number): Date {
   return result
 }
 
-/** Polska odmiana: 1 rok, 2 lata, 5 lat. */
-export function yearsLabel(years: number): string {
-  if (years === 1) return '1 rok'
+/** Polska odmiana rzeczownika: rok, 2 lata, 5 lat, 22 lata. */
+export function yearsUnit(years: number): string {
+  if (years === 1) return 'rok'
   const lastTwo = years % 100
   const last = years % 10
   const isFew = last >= 2 && last <= 4 && !(lastTwo >= 12 && lastTwo <= 14)
-  return `${years} ${isFew ? 'lata' : 'lat'}`
+  return isFew ? 'lata' : 'lat'
+}
+
+export function yearsLabel(years: number): string {
+  return `${years} ${yearsUnit(years)}`
 }

@@ -6,6 +6,10 @@ Interfejs jest po polsku, projektowany mobile-first.
 
 ## Co robi
 
+- Sekcja **„Osiemnaste urodziny to najlepszy możliwy start”** pokazuje na liczbach, ile kosztuje
+  odłożenie startu o kilka lat przy identycznym planie wpłat.
+- Sekcja **„Zanim wpłacisz pierwszą złotówkę”** tłumaczy prostym językiem, czym jest akcja, czym
+  ETF, czym konkretnie ten fundusz i gdzie jest haczyk.
 - Wykres wartości portfela z rozbiciem na **Twoje wpłaty** i **zysk z procentu składanego**.
 - Przeciąganie palcem po wykresie pokazuje wartość w dowolnym miesiącu.
 - Karty punktów kontrolnych dla 10, 20 i 50 lat.

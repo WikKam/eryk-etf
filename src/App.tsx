@@ -1,9 +1,18 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Explainer } from './components/Explainer'
 import { GrowthChart } from './components/GrowthChart'
 import { MilestoneCard } from './components/MilestoneCard'
 import { ParamSlider } from './components/ParamSlider'
+import { StartEarly } from './components/StartEarly'
 import { buildProjection, displayValues, pointAtYear } from './lib/projection'
-import { addMonths, formatDate, formatMoney, formatPercent, yearsLabel } from './lib/format'
+import {
+  addMonths,
+  formatDate,
+  formatMoney,
+  formatPercent,
+  yearsLabel,
+  yearsUnit,
+} from './lib/format'
 import { useAnimatedNumber } from './lib/useAnimatedNumber'
 
 /** Dzień zakupu ETF-a, od którego liczymy całą projekcję. */
@@ -75,6 +84,17 @@ export default function App() {
 
   const headline = displayValues(pointAtYear(fullProjection, params.horizonYears), params.showReal)
   const animatedTotal = useAnimatedNumber(headline.total)
+
+  // Ile kosztuje samo odwlekanie startu: ten sam plan wpłat, ta sama data końcowa,
+  // tylko krótszy czas na pracę procentu składanego.
+  const delayYears = Math.min(10, Math.max(1, Math.floor(params.horizonYears / 2)))
+  const delayed = displayValues(
+    pointAtYear(fullProjection, params.horizonYears - delayYears),
+    params.showReal,
+  )
+  const contributionGap = headline.contributed - delayed.contributed
+  const timeCost = headline.total - delayed.total - contributionGap
+
   const isDefault =
     params.initial === DEFAULTS.initial &&
     params.monthly === DEFAULTS.monthly &&
@@ -94,11 +114,21 @@ export default function App() {
         </h1>
         <p className="hero__lead">
           Zakup startuje {formatDate(START_DATE)}. Przesuwaj suwaki i zobacz, jak procent składany
-          pracuje na Twoich wpłatach.
+          pracuje na Twoich wpłatach. Nie wiesz, co to akcja ani ETF?{' '}
+          <a href="#podstawy">Tłumaczymy niżej</a>, bez żargonu.
         </p>
       </header>
 
       <main className="stack">
+        <StartEarly
+          delayYears={delayYears}
+          currentTotal={headline.total}
+          delayedTotal={delayed.total}
+          contributionGap={contributionGap}
+          timeCost={timeCost}
+          showComparison={timeCost > 0}
+        />
+
         <section className="card card--result">
           <div className="chips" role="group" aria-label="Horyzont inwestycji">
             {HORIZONS.map((years) => (
@@ -175,6 +205,11 @@ export default function App() {
           </div>
         </section>
 
+        <section className="section" id="podstawy">
+          <h2 className="section__title">Zanim wpłacisz pierwszą złotówkę</h2>
+          <Explainer />
+        </section>
+
         <section className="card">
           <div className="card__head">
             <h2 className="section__title">Twoje założenia</h2>
@@ -196,7 +231,7 @@ export default function App() {
             max={500000}
             step={500}
             unit="zł"
-            hint={`Kupione ${formatDate(START_DATE)}`}
+            hint={`Wpłacasz ją ${formatDate(START_DATE)}`}
             onChange={(value) => update('initial', value)}
           />
           <ParamSlider
@@ -237,7 +272,7 @@ export default function App() {
             min={1}
             max={50}
             step={1}
-            unit="lat"
+            unit={yearsUnit(params.horizonYears)}
             hint="Punkty kontrolne zawsze pokazują 10, 20 i 50 lat"
             onChange={(value) => update('horizonYears', value)}
           />

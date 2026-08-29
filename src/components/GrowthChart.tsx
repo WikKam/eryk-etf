@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
 import { displayValues } from '../lib/projection'
 import type { ProjectionPoint } from '../lib/projection'
-import { formatCompactMoney, formatMoney } from '../lib/format'
+import { formatCompactMoney, formatMoney, yearsLabel } from '../lib/format'
 
 interface GrowthChartProps {
   points: ProjectionPoint[]
@@ -155,7 +155,7 @@ export function GrowthChart({ points, showReal, years }: GrowthChartProps) {
           width={width}
           height={height}
           role="img"
-          aria-label={`Wykres wzrostu inwestycji przez ${years} lat`}
+          aria-label={`Wykres wzrostu inwestycji przez ${yearsLabel(years)}`}
           onPointerDown={handlePointer}
           onPointerMove={(event) => {
             if (event.pointerType === 'mouse' || event.buttons > 0) handlePointer(event)
