@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
 import { displayValues } from '../lib/projection'
 import type { ProjectionPoint } from '../lib/projection'
+import { buildScale } from '../lib/scale'
 import { formatCompactMoney, formatMoney, yearsLabel } from '../lib/format'
 
 interface GrowthChartProps {
@@ -19,14 +20,6 @@ const MAX_RENDERED_POINTS = 220
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value))
-
-function niceStep(rawStep: number): number {
-  if (rawStep <= 0) return 1
-  const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)))
-  const normalized = rawStep / magnitude
-  const stepped = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10
-  return stepped * magnitude
-}
 
 export function GrowthChart({ points, showReal, years }: GrowthChartProps) {
   const gradientId = useId()
@@ -55,11 +48,8 @@ export function GrowthChart({ points, showReal, years }: GrowthChartProps) {
     for (const point of points) {
       peak = Math.max(peak, point.balance, point.contributed)
     }
-    const step = niceStep(peak / 4)
-    const top = Math.max(step, Math.ceil(peak / step) * step)
-    const ticks: number[] = []
-    for (let value = 0; value <= top + step / 2; value += step) ticks.push(value)
-    return { yMax: top, yTicks: ticks }
+    const scale = buildScale(peak)
+    return { yMax: scale.max, yTicks: scale.ticks }
   }, [points])
 
   const { scaleX, scaleY } = useMemo(
