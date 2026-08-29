@@ -19,7 +19,9 @@ import { useAnimatedNumber } from './lib/useAnimatedNumber'
 const START_DATE = new Date(2026, 7, 29)
 const MILESTONES = [10, 20, 50]
 const HORIZONS = [10, 20, 50]
-const STORAGE_KEY = 'sp500-projection-params-v1'
+// Wersja w kluczu: zmiana domyślnych ustawień ma dotrzeć też do osób,
+// które mają już zapisany poprzedni zestaw.
+const STORAGE_KEY = 'sp500-projection-params-v2'
 
 interface Params {
   initial: number
@@ -35,7 +37,7 @@ const DEFAULTS: Params = {
   monthly: 500,
   annualReturnPct: 7,
   annualInflationPct: 2.5,
-  horizonYears: 20,
+  horizonYears: 10,
   showReal: false,
 }
 
@@ -99,7 +101,8 @@ export default function App() {
     params.initial === DEFAULTS.initial &&
     params.monthly === DEFAULTS.monthly &&
     params.annualReturnPct === DEFAULTS.annualReturnPct &&
-    params.annualInflationPct === DEFAULTS.annualInflationPct
+    params.annualInflationPct === DEFAULTS.annualInflationPct &&
+    params.horizonYears === DEFAULTS.horizonYears
 
   return (
     <div className="page">
@@ -217,7 +220,7 @@ export default function App() {
               <button
                 type="button"
                 className="reset"
-                onClick={() => setParams({ ...DEFAULTS, horizonYears: params.horizonYears })}
+                onClick={() => setParams({ ...DEFAULTS, showReal: params.showReal })}
               >
                 Przywróć domyślne
               </button>
