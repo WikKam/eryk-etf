@@ -821,6 +821,21 @@ p {
   color: var(--real);
 }
 
+.explainer__item--evidence {
+  border-color: rgba(52, 211, 153, 0.3);
+  background: rgba(52, 211, 153, 0.05);
+}
+
+.explainer__item--evidence .explainer__number {
+  border-color: rgba(52, 211, 153, 0.45);
+}
+
+.explainer__body a {
+  color: var(--gain);
+  text-decoration-color: rgba(52, 211, 153, 0.4);
+  text-underline-offset: 3px;
+}
+
 .explainer__body {
   display: flex;
   flex-direction: column;
