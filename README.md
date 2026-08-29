@@ -22,7 +22,7 @@ Interfejs jest po polsku, projektowany mobile-first.
 
 | Parametr              | Domyślnie | Zakres        |
 | --------------------- | --------- | ------------- |
-| Kwota na start        | 5 000 zł  | 0 – 500 000   |
+| Kwota na start        | 4 000 zł  | 0 – 500 000   |
 | Dopłata co miesiąc    | 500 zł    | 0 – 20 000    |
 | Zwrot rocznie         | 7,0%      | −10% – 20%    |
 | Inflacja rocznie      | 2,5%      | 0% – 15%      |

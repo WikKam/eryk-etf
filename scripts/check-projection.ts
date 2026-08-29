@@ -83,7 +83,8 @@ function mulberry32(seed: number) {
   }
 }
 
-const BASE = { initial: 5000, monthly: 500, annualReturn: 0.07, annualInflation: 0.025 }
+/** Domyślne ustawienia strony – audyt pilnuje dokładnie tych liczb. */
+const BASE = { initial: 4000, monthly: 500, annualReturn: 0.07, annualInflation: 0.025 }
 
 // ── 1. Stopa miesięczna ─────────────────────────────────────────────────────
 
@@ -117,7 +118,11 @@ for (const years of [1, 10, 20, 30, 50]) {
 section('Tożsamości księgowe')
 for (const years of [10, 20, 50]) {
   const point = pointAtYear(buildProjection({ ...BASE, years }), years)
-  close(`${years} l. – wpłaty = start + 12·lata·rata`, point.contributed, 5000 + 500 * years * 12)
+  close(
+    `${years} l. – wpłaty = start + 12·lata·rata`,
+    point.contributed,
+    BASE.initial + BASE.monthly * years * 12,
+  )
   close(`${years} l. – zysk = saldo − wpłaty`, point.gains, point.balance - point.contributed)
   close(
     `${years} l. – wartość realna = saldo / (1+i)^lata`,
@@ -391,9 +396,9 @@ section('Domyślne ustawienia – wartości ze strony')
   const projection = buildProjection({ ...BASE, years: 50 })
   const expectations: Array<[number, number, number]> = [
     // [lata, saldo, wpłaty]
-    [10, 95361.6224, 65000],
-    [20, 273116.6106, 125000],
-    [50, 2663759.5979, 305000],
+    [10, 93394.4711, 64000],
+    [20, 269246.9261, 124000],
+    [50, 2634302.5728, 304000],
   ]
   for (const [years, balance, contributed] of expectations) {
     const point = pointAtYear(projection, years)
@@ -401,13 +406,13 @@ section('Domyślne ustawienia – wartości ze strony')
     close(`${years} l. – wpłaty ${contributed} zł`, point.contributed, contributed)
   }
   close(
-    '50 l. – wartość realna 775 000 zł',
+    '50 l. – wartość realna 766 430 zł',
     displayValues(pointAtYear(projection, 50), true).total,
-    775000.0990,
+    766429.807,
     1e-7,
   )
   const multiplier = pointAtYear(projection, 50).balance / pointAtYear(projection, 50).contributed
-  close('50 l. – mnożnik ×8,73', multiplier, 8.7336, 1e-4)
+  close('50 l. – mnożnik ×8,67', multiplier, 8.6655, 1e-4)
 }
 
 // ── Podsumowanie ────────────────────────────────────────────────────────────

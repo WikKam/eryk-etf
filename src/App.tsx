@@ -21,7 +21,7 @@ const MILESTONES = [10, 20, 50]
 const HORIZONS = [10, 20, 50]
 // Wersja w kluczu: zmiana domyślnych ustawień ma dotrzeć też do osób,
 // które mają już zapisany poprzedni zestaw.
-const STORAGE_KEY = 'sp500-projection-params-v2'
+const STORAGE_KEY = 'sp500-projection-params-v3'
 
 interface Params {
   initial: number
@@ -33,7 +33,7 @@ interface Params {
 }
 
 const DEFAULTS: Params = {
-  initial: 5000,
+  initial: 4000,
   monthly: 500,
   annualReturnPct: 7,
   annualInflationPct: 2.5,
